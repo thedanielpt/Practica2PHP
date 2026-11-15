@@ -1,15 +1,15 @@
 <?php
 
-require_once "ws/Connection.php";
+require_once "ws/crud/getAlumno.php";
 
 try {
 
-    $pdo = new Connection();
+    getUsuario();
 
 } catch (Exception $e){
-    return json_encode([
+    throw new ErrorException(json_encode([
         "success" => false,
         "message" => "Error de conexion, ". $e->getMessage(),
         "data" => []
-    ]);
+    ]));
 }
