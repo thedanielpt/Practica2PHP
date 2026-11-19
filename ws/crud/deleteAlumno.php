@@ -4,10 +4,10 @@ require_once "ws/connection/Connection.php";
 
 function deleteAlumno(){
 
-    if (!isset($_GET["id"])) {
+    if (!isset($_GET["id"]) || !is_numeric($_GET["id"])  || $_GET["id"] < 0) {
         return json_encode([
             "success" => false,
-            "message" => "Variable id no encontrada",
+            "message" => "Variable id no valida",
         ]);
     }
 
