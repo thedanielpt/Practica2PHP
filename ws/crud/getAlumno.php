@@ -5,13 +5,18 @@ require_once "ws/connection/Connection.php";
 //Se le pone ? para que pueda ser null el parametro
 function getAlumno(){
 
-    $id = "";
+    $id = 0;
 
     if (!isset($_GET["id"])) {
         $id = null;
-    } else if (is_numeric($_GET["id"]) || $_GET["id"] > 0){
+    }
+    
+    //Se carga todos los decimales y los que no son numeros
+    if ($id === 0 && ctype_digit($_GET["id"]) && $_GET["id"] > 0){
         $id = $_GET['id'];
-    } else {
+    }
+    
+    if ($id === 0) {
         return json_encode([
             "success" => false,
             "message" => "Error al intentar recoger el parametro",
