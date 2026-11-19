@@ -3,7 +3,21 @@
 require_once "ws/connection/Connection.php";
 
 //Se le pone ? para que pueda ser null el parametro
-function getUsuario(?int $id = null){
+function getAlumno(){
+
+    $id = "";
+
+    if (!isset($_GET["id"])) {
+        $id = null;
+    } else if (is_numeric($_GET["id"]) || $_GET["id"] > 0){
+        $id = $_GET['id'];
+    } else {
+        return json_encode([
+            "success" => false,
+            "message" => "Error al intentar recoger el parametro",
+            "data" => []
+        ]);
+    }
 
     //Variable que contiene los datos qeu hemos pedido al servidor
     $datos = "";
