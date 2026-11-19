@@ -1,17 +1,19 @@
 <?php
 
 require_once "ws/connection/Connection.php";
+require_once "ws/validators/validators.php";
 
 function deleteAlumno(){
+    $id = 0;
 
-    if (!isset($_GET["id"]) || !is_numeric($_GET["id"])  || $_GET["id"] < 0) {
+    if (isset($_GET["id"])) {
+        $id = validarId($_GET['id']);
+    } else {
         return json_encode([
             "success" => false,
             "message" => "Variable id no valida",
         ]);
     }
-
-    $id = $_GET["id"];
 
     //Objeto conexion para acceder a la base de datos
     $connection = new Connection();

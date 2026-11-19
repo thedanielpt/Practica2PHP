@@ -2,10 +2,13 @@
 
 require_once "ws/crud/getAlumno.php";
 require_once "ws/crud/deleteAlumno.php";
-require_once "ws/crud/crearAlumno.php";
+require_once "ws/crud/createAlumno.php";
+require_once "ws/crud/modifyAlumno.php";
 
-//echo getUsuario();
+//echo getAlumno();
 
 //echo deleteAlumno();
 
-echo crearAlumno();
+echo createAlumno();
+
+//echo modifyAlumno();

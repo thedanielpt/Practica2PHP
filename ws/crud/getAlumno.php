@@ -1,19 +1,17 @@
 <?php
 
 require_once "ws/connection/Connection.php";
+require_once "ws/validators/validators.php";
 
 //Se le pone ? para que pueda ser null el parametro
 function getAlumno(){
 
     $id = 0;
 
-    if (!isset($_GET["id"])) {
+    if (isset($_GET['id'])) {
+        $id = validarId($_GET['id']);
+    } else {
         $id = null;
-    }
-    
-    //Se carga todos los decimales y los que no son numeros
-    if ($id === 0 && ctype_digit($_GET["id"]) && $_GET["id"] > 0){
-        $id = $_GET['id'];
     }
     
     if ($id === 0) {

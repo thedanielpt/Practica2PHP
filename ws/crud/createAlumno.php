@@ -1,8 +1,9 @@
 <?php
 
 require_once "ws/connection/Connection.php";
+require_once "ws/validators/validators.php";
 
-function crearAlumno(){
+function createAlumno(){
 
     //Objeto conexion para acceder a la base de datos
     $connection = new Connection();
@@ -14,7 +15,9 @@ function crearAlumno(){
     //Variable para hacer todos los pasos para ejecutar la query
     $statement = "";
 
-    if (!isset($_POST['nombre']) || Empty($_POST['nombre'])) {
+    
+    // VALIDAR NOMBRE
+    if (!isset($_POST['nombre']) || !validarNombre($_POST['nombre'])) {
         return json_encode([
             "success" => false,
             "message" => "Nombre no valida",
@@ -24,7 +27,8 @@ function crearAlumno(){
     $nombre = $_POST['nombre'];
 
 
-    if (!isset($_POST['apellidos']) || empty($_POST['apellidos'])) {
+    // VALIDAR APELLIDOS
+    if (!isset($_POST['apellidos']) || !validarApellidos($_POST['apellidos'])) {
         return json_encode([
             "success" => false,
             "message" => "Apellido no valida",
@@ -34,7 +38,8 @@ function crearAlumno(){
     $apellido = $_POST['apellidos'];
 
 
-    if (!isset($_POST['password']) || empty($_POST['password']) || strlen($_POST['password']) < 8) {
+    // VALIDAR PASSWORD
+    if (!isset($_POST['password']) || !validarPassword($_POST['password'])) {
         return json_encode([
             "success" => false,
             "message" => "Password no valida",
@@ -43,13 +48,17 @@ function crearAlumno(){
 
     $password = $_POST['password'];
 
+
+    // PARÁMETROS OPCIONALES
     $telefono = $_POST['telefono'] ?? null;
 
     $sexo = $_POST['sexo'] ?? null;
 
     $email = $_POST['email'] ?? null;
 
-    if (empty($_POST['fecha'])) {
+
+    // VALIDAR FECHA
+    if (!isset($_POST['fecha']) || !validarFecha($_POST['fecha'])) {
         return json_encode([
             "success" => false,
             "message" => "No se encuentra la fecha",
@@ -57,6 +66,7 @@ function crearAlumno(){
     }
 
     $fecha = $_POST['fecha'];
+
 
     try {
         $statement = $connection->getConnection()->prepare($query);
