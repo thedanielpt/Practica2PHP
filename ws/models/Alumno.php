@@ -1,6 +1,6 @@
 <?php
 
-require_once "interfaces/IToJson.php";
+require_once "ws/interfaces/IToJson.php";
 
 class Alumno implements IToJson{
 
@@ -8,13 +8,13 @@ class Alumno implements IToJson{
     private string $nombre;
     private string $apellidos;
     private string $password;
-    private string $telefono;
-    private string $email;
-    private string $sexo;
+    private ?string $telefono;
+    private ?string $email;
+    private ?string $sexo;
     private string $fecha_nacimiento;
 
-    public function __construct(int $id, string $nombre, string $apellidos, string $password, string $telefono, string $email, 
-    string $sexo, string $fecha_nacimiento) {
+    public function __construct(int $id, string $nombre, string $apellidos, string $password, ?string $telefono, ?string $email, 
+    ?string $sexo, string $fecha_nacimiento) {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
