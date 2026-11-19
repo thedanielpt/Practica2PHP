@@ -9,6 +9,6 @@ require_once "ws/crud/modifyAlumno.php";
 
 //echo deleteAlumno();
 
-echo createAlumno();
+//echo createAlumno();
 
-//echo modifyAlumno();
+echo modifyAlumno();
