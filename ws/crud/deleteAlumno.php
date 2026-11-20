@@ -44,6 +44,7 @@ function deleteAlumno(){
         return json_encode([
             "success" => true,
             "message" => "Usuairo eliminado correctamente",
+            "data" => null
         ]);
 
     }catch (PDOException $e){

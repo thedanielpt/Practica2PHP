@@ -84,6 +84,7 @@ function createAlumno(){
         return json_encode([
             "success" => true,
             "message" => "Usuairo creado correctamente",
+            "data" => null
         ]);
 
     }catch (PDOException $e){

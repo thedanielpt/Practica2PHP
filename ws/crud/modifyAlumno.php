@@ -113,7 +113,8 @@ function modifyAlumno(){
 
         return json_encode([
             "success" => true,
-            "message" => "El alumno se ha modificado correctamente."
+            "message" => "El alumno se ha modificado correctamente.",
+            "data" => null
         ]);
 
     } catch (PDOException $e){
