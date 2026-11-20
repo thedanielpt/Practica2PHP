@@ -1,48 +1,29 @@
 
 <?php
 
-function validarId($id) {
-
-    // Se carga todos los decimales y los que no son números
-    if (ctype_digit((string) $id) && $id > 0) {
-        return $id;
-    }
-
-    return 0;
+function validarId(string $id) {
+    return (ctype_digit((string) $id) && $id > 0) ? $id : 0;
 }
 
 function validarNombre(string $nombre) {
-
-    if (empty($nombre)) {
-        return false;
-    }
-
-    return true;
+    return !empty($nombre);
 }
 
 function validarApellidos(string $apellidos) {
-
-    if (empty($apellidos)) {
-        return false;
-    }
-
-    return true;
+    return !empty($apellidos);
 }
 
 function validarPassword(string $password) {
-
-    if (empty($password) || strlen($password) < 8) {
-        return false;
-    }
-
-    return true;
+    return !empty($password) && strlen($password) >= 8;
 }
 
 function validarFecha(string $fecha) {
+    return !empty($fecha);
+}
 
-    if (empty($fecha)) {
-        return false;
-    }
-
-    return true;
+//sirve apraa validar si se tiene que modificar ese parametro del objeto
+//Se le pone el $nuevo !== null porque en el modificar deulve null si no lo han pasado como parametro
+//Se le pone la minterrogacion par que deje entra a null
+Function validarModifcar(?string $nuevo){
+    return $nuevo !== null && !empty($nuevo);
 }

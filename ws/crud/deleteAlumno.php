@@ -4,6 +4,17 @@ require_once "ws/connection/Connection.php";
 require_once "ws/validators/validators.php";
 
 function deleteAlumno(){
+
+    //Objeto conexion para acceder a la base de datos
+    $connection = new Connection();
+    
+    //Variable que contiene la query que queremos ejecutar
+    $query = "DELETE FROM alumno where id = :id";
+
+    //Variable para hacer todos los pasos para ejecutar la query
+    $statement = "";
+
+    //Variable que representa al id del objeto
     $id = 0;
 
     if (isset($_GET["id"])) {
@@ -14,15 +25,6 @@ function deleteAlumno(){
             "message" => "Variable id no valida",
         ]);
     }
-
-    //Objeto conexion para acceder a la base de datos
-    $connection = new Connection();
-    
-    //Variable que contiene la query que queremos ejecutar
-    $query = "DELETE FROM alumno where id = :id";
-
-    //Variable para hacer todos los pasos para ejecutar la query
-    $statement = "";
 
     try {
         $statement = $connection->getConnection()->prepare($query);

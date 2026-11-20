@@ -14,7 +14,7 @@ function modifyAlumno(){
 
     //Variable donde se guarara el objeto alumno
     $alumno = "";
-    //Convertimos el json en un array asociativo de php
+    //Convertimos el json en un array asociativo de php si le pones el true, si no se es un objeto de php
     $datos = json_decode(getAlumno(), true);
 
     //Variable que contiene la query que queremos ejecutar
@@ -22,9 +22,9 @@ function modifyAlumno(){
 
     //Variable para hacer todos los pasos para ejecutar la query
     $statement = "";
-
-    //Te devuelve 16 claves del $datos['data'], ya qeu tambien esta el Array asociativo y el numérico
-    if (!isset($datos['data']) || count($datos['data']) !== 16){
+    
+    //Te devuelve 16 claves del $datosD['data'], ya qeu tambien esta el Array asociativo y el numérico
+    if (!isset($datos['data']) || count($datos['data']) !== 8){
         return json_encode([
             "success" => false,
             "message" => "No se ha encontrado al alumno que se quiere modificar",
@@ -37,16 +37,16 @@ function modifyAlumno(){
         );
     }
 
-    //Estas variables sirven para comprobar que parametros por POST nos han pasado
-    $nuevoNombre = (isset($_POST['nombre'])) ? $_POST['nombre'] : null;
-    $nuevoApellido = (isset($_POST['apellidos'])) ? $_POST['apellidos'] : null;
-    $nuevaPassword = (isset($_POST['password'])) ? $_POST['password'] : null;
-    $nuevoTelefono = (isset($_POST['telefono'])) ? $_POST['telefono'] : null;
-    $nuevoEmail = (isset($_POST['email'])) ? $_POST['email'] : null;
-    $nuevoSexo = (isset($_POST['sexo'])) ? $_POST['sexo'] : null;
-    $nuevoFecha_nacimiento = (isset($_POST['fecha'])) ? $_POST['fecha'] : null;
+    //Estas variables sirven para comprobar que parametros por POST nos han pasado y no estan vacios
+    $nuevoNombre = isset($_POST['nombre']) ? $_POST['nombre'] : null;
+    $nuevoApellido = isset($_POST['apellidos']) ? $_POST['apellidos'] : null;
+    $nuevaPassword = isset($_POST['password']) ? $_POST['password'] : null;
+    $nuevoTelefono = isset($_POST['telefono']) ? $_POST['telefono'] : null;
+    $nuevoEmail = isset($_POST['email']) ? $_POST['email'] : null;
+    $nuevoSexo = isset($_POST['sexo']) ? $_POST['sexo'] : null;
+    $nuevoFecha_nacimiento = isset($_POST['fecha']) ? $_POST['fecha'] : null;
 
-    if ($nuevoNombre !== null && !empty($nuevoNombre)) {
+    if (validarModifcar($nuevoNombre)) {
         if ($nuevoNombre !== $alumno->getNombre()) {
             $campos[] = "nombre = :nombre";
         } else {
@@ -57,7 +57,7 @@ function modifyAlumno(){
         }
     }
 
-    if ($nuevoApellido !== null && !empty($nuevoApellido)) {
+    if (validarModifcar($nuevoApellido)) {
         if ($nuevoApellido !== $alumno->getApellidos()) {
             $campos[] = "apellidos = :apellidos";
         } else {
@@ -68,8 +68,8 @@ function modifyAlumno(){
         }
     }
 
-    if ($nuevaPassword !== null && !empty($nuevaPassword)) {
-        if (validarPassword($nuevaPassword) && $nuevaPassword !== $alumno->getPassword()) {
+    if (validarModifcar($nuevaPassword)) {
+        if ($nuevaPassword !== $alumno->getPassword() && validarPassword($nuevaPassword)) {
             $campos[] = "password = :password";
         } else {
             return json_encode([
@@ -79,7 +79,7 @@ function modifyAlumno(){
         }
     }
 
-    if ($nuevoFecha_nacimiento !== null) {
+    if (validarModifcar($nuevoFecha_nacimiento)) {
         if ($nuevoFecha_nacimiento !== $alumno->getFechaNacimiento()) {
             $campos[] = "fecha_nacimiento = :fecha";
         } else {
@@ -90,9 +90,9 @@ function modifyAlumno(){
         }
     }
 
-    (isset($_POST['telefono'])) ? $campos[] = "telefono = :telefono" : "";
-    (isset($_POST['email'])) ? $campos[] = "email = :email" : "";
-    (isset($_POST['sexo'])) ? $campos[] = "sexo = :sexo" : "";
+    validarModifcar($nuevoTelefono) ? $campos[] = "telefono = :telefono" : "";
+    validarModifcar($nuevoEmail) ? $campos[] = "email = :email" : "";
+    validarModifcar($nuevoSexo) ? $campos[] = "sexo = :sexo" : "";
 
     try {
         $query = "UPDATE alumno SET " . implode(", ", $campos) . " WHERE id = :id";
@@ -101,13 +101,13 @@ function modifyAlumno(){
         
         $statement->bindParam(":id", $_GET['id']);
 
-        (isset($_POST['nombre'])) ? $statement->bindParam(":nombre", $nuevoNombre) : "";
-        (isset($_POST['apellidos'])) ? $statement->bindParam(":apellidos", $nuevoApellido) : "";
-        (isset($_POST['password'])) ? $statement->bindParam(":password", $nuevaPassword) : "";
-        (isset($_POST['telefono'])) ? $statement->bindParam(":telefono", $nuevoTelefono) : "";
-        (isset($_POST['email'])) ? $statement->bindParam(":email", $nuevoEmail) : "";
-        (isset($_POST['sexo'])) ? $statement->bindParam(":sexo", $nuevoSexo) : "";
-        (isset($_POST['fecha'])) ? $statement->bindParam(":fecha", $nuevoFecha_nacimiento) : "";
+        $nuevoNombre !== null ? $statement->bindParam(":nombre", $nuevoNombre) : "";
+        $nuevoApellido !== null ? $statement->bindParam(":apellidos", $nuevoApellido) : "";
+        $nuevaPassword !== null ? $statement->bindParam(":password", $nuevaPassword) : "";
+        $nuevoTelefono !== null ? $statement->bindParam(":telefono", $nuevoTelefono) : "";
+        $nuevoEmail !== null ? $statement->bindParam(":email", $nuevoEmail) : "";
+        $nuevoSexo !== null ? $statement->bindParam(":sexo", $nuevoSexo) : "";
+        $nuevoFecha_nacimiento !== null ? $statement->bindParam(":fecha", $nuevoFecha_nacimiento) : "";
 
         $statement->execute();
 

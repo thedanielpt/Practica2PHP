@@ -5,7 +5,19 @@ require_once "ws/validators/validators.php";
 
 //Se le pone ? para que pueda ser null el parametro
 function getAlumno(){
+    //Variable que contiene los datos qeu hemos pedido al servidor
+    $datos = "";
 
+    //Objeto conexion para acceder a la base de datos
+    $connection = new Connection();
+    
+    //Variable que contiene la query que queremos ejecutar
+    $query = "SELECT * FROM alumno";
+
+    //Variable para hacer todos los pasos para ejecutar la query
+    $statement = "";
+
+    //Variable que representa al id del objeto
     $id = 0;
 
     if (isset($_GET['id'])) {
@@ -22,17 +34,6 @@ function getAlumno(){
         ]);
     }
 
-    //Variable que contiene los datos qeu hemos pedido al servidor
-    $datos = "";
-
-    //Objeto conexion para acceder a la base de datos
-    $connection = new Connection();
-    
-    //Variable que contiene la query que queremos ejecutar
-    $query = "SELECT * FROM alumno";
-
-    //Variable para hacer todos los pasos para ejecutar la query
-    $statement = "";
     try {
         if ($id === null){
         
@@ -58,7 +59,7 @@ function getAlumno(){
     try {
         $statement->execute();
 
-        $datos = ($id === null) ? $datos = $statement->fetchAll() : $datos = $statement->fetch();
+        $datos = ($id === null) ? $datos = $statement->fetchAll(PDO::FETCH_ASSOC) : $datos = $statement->fetch(PDO::FETCH_ASSOC);
 
         return json_encode([
             "success" => true,
